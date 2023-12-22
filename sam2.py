@@ -4,10 +4,10 @@ import asyncio
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # Load environment variables from .env file
+load_dotenv()  # Laad omgevingsvariabelen uit het .env-bestand
 
 intents = discord.Intents.default()
-intents.message_content = True  # Enable privileged message content intent
+intents.message_content = True  # Schakel het berichtinhoudsprivilege in
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
@@ -34,10 +34,11 @@ async def on_message(message):
 @tasks.loop(hours=4)  # Taakplanning elke 4 uur
 async def send_message():
     for guild in bot.guilds:
-        for channel in guild.channels:
-            if isinstance(channel, discord.TextChannel):
-                await channel.send("Heb je 20€ voor me? Ik ben kkr broke en heb geld nodig")
-                await asyncio.sleep(1)  # Wacht 1 seconde tussen elk bericht
+        main_channel = guild.system_channel  # Krijg het hoofdkanaal van de server
+        if main_channel is not None:  # Controleer of het hoofdkanaal bestaat
+            await main_channel.send("Heb je 20€ voor me? Ik ben kkr broke en heb geld nodig")
+            break  # Stop met itereren door de servers nadat het bericht is verzonden in het hoofdkanaal
+    await asyncio.sleep(1)  # Wacht 1 seconde tussen elk bericht
 
 @bot.command()
 async def hello(ctx):
