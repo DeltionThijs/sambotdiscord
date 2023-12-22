@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands, tasks
 import asyncio
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load environment variables from .env file
 
 intents = discord.Intents.default()
 intents.message_content = True  # Enable privileged message content intent
@@ -39,4 +43,5 @@ async def send_message():
 async def hello(ctx):
     await ctx.send('Hallo, ik ben een sam de kanker mongool')
 
-bot.run('MTE4NzUxNjM5NjE2NzQ5NTcyMQ.GNmfNE.gA9tdL5OxGfNbGX_oY1Ye4HXUAeSh7CMMFkPE4')
+bot.run(os.getenv('DISCORD_TOKEN'))
+
